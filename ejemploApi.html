@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Ejemplo Conexión API</title>
+</head>
+<body>
+  <h1>Conexión a una API con JavaScript (GET)</h1>
+
+  <!-- Botón para cargar datos -->
+  <button id="btnCargar">Cargar Datos</button>
+
+  <!-- Contenedor para mostrar resultados -->
+  <div id="resultado"></div>
+
+  <script>
+    // Paso 1: Obtener las referencias de los elementos HTML
+    // Guardamos en variables el botón y el contenedor donde mostraremos los datos
+    const boton = document.getElementById('btnCargar');
+    const resultado = document.getElementById('resultado');
+
+    // Paso 2: Crear una función que haga la petición GET a la API
+    async function obtenerDatos(){
+      try {
+        // Usamos fetch para hacer la petición a una API pública de ejemplo
+        // fetch devuelve una promesa que contiene la respuesta de la API
+        const respuesta = await fetch('https://jsonplaceholder.typicode.com/posts');
+
+        // Convertimos la respuesta en formato JSON para poder trabajar con ella
+        const datos = await respuesta.json();
+
+        // Paso 3: Mostrar los datos en el navegador
+        // En este caso, solo mostraremos los títulos de los primeros 5 elementos
+        resultado.innerHTML = ''; // Limpiamos el contenido previo
+        datos.slice(0,5).forEach(item => {
+          // Por cada objeto recibido, añadimos un párrafo con el título
+          resultado.innerHTML += `<p><strong>${item.title}</strong></p>`;
+        });
+      } catch (error) {
+        // Si ocurre un error (problema de conexión o de la API), lo mostramos al usuario
+        resultado.textContent = 'Error al cargar los datos';
+      }
+    }
+
+    // Paso 4: Hacer que al hacer clic en el botón, se ejecute la función obtenerDatos()
+    boton.addEventListener('click', obtenerDatos);
+  </script>
+</body>
+</html>
